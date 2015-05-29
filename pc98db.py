@@ -122,10 +122,11 @@ class MainWindow(QtGui.QMainWindow):
 		self.screens = []
 		self.imgLoad = False
 		
-		for DIV in self.doc.cssselect('div#screenshot'):
+		for DIV in self.doc.cssselect('div#title_bg'):
 			self.titleEng = DIV.cssselect('div#title_en')[0].text
 			self.titleJap = DIV.cssselect('div#title_jp')[0].text
-			self.data.setText(DIV.cssselect('div#publisher')[0].text)
+		
+		self.data.setText(self.doc.cssselect('div#publisher')[0].text)
 		
 		self.title.setText('<font size=5>%s<br/>%s</font>' % (self.titleEng, self.titleJap))
 		
@@ -176,7 +177,7 @@ class MainWindow(QtGui.QMainWindow):
 		
 		result = {}
 		for A in self.doc.cssselect('div#navi a'):
-			result[A.cssselect('span')[0].text] = A.get('href')
+			result[A.cssselect('div')[0].text] = A.get('href')
 		
 		result.pop("Index", None)
 		result.pop("Publisher", None)
