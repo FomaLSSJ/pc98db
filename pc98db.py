@@ -7,13 +7,13 @@ from PyQt4 import QtGui, QtCore, QtWebKit
 from lxml import etree
 from lxml.html import HTMLParser
 from Tkinter import Tk
-import urllib2, lxml.html, webbrowser, sys, os
+import urllib2, lxml.html, webbrowser, string, sys, os
 
 url = 'http://mercenaryforce.web.fc2.com/pc9801/'
 
 class MainWindow(QtGui.QMainWindow):
-	def __init__(self):
-		QtGui.QMainWindow.__init__(self)
+	def __init__(self, parent=None):
+		super(MainWindow, self).__init__(parent)
 		
 		self.gameLink = ''
 		self.titleJap = ''
@@ -47,9 +47,6 @@ class MainWindow(QtGui.QMainWindow):
 		self.data = QtGui.QLabel('Publisher:??? | Release:??? | Media:???', self)
 		self.data.setGeometry(QtCore.QRect(280, 87, 731, 16))
 		
-		self.note = QtGui.QLabel('Note:???', self)
-		self.note.setGeometry(QtCore.QRect(280, 107, 731, 16))
-		
 		self.frame = QtGui.QFrame(self)
 		self.frame.setGeometry(QtCore.QRect(280, 170, 650, 410))
 		self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -82,6 +79,11 @@ class MainWindow(QtGui.QMainWindow):
 		self.scr3.setGeometry(QtCore.QRect(660, 140, 60, 24))
 		self.scr3.setEnabled(False)
 		
+		self.note = QtGui.QPushButton('Note', self)
+		self.note.clicked.connect(self.OpenNote)
+		self.note.setGeometry(QtCore.QRect(830, 110, 100, 24))
+		self.note.setEnabled(False)
+		
 		self.browser = QtGui.QPushButton('Open in Browser', self)
 		self.browser.clicked.connect(self.GetUrl)
 		self.browser.setGeometry(QtCore.QRect(830, 140, 100, 24))
@@ -96,8 +98,12 @@ class MainWindow(QtGui.QMainWindow):
 		self.web.page().mainFrame().loadStarted.connect(self.WebStarted)
 		self.web.page().mainFrame().loadFinished.connect(self.WebComplete)
 		
+		self.notewin = QtGui.QWidget()
+		self.webnote = QtWebKit.QWebView(self.notewin)
+		self.webnote.setGeometry(QtCore.QRect(5, 5, 1200, 790))
+		
 		self.GetRootElement()
-
+		
 	def SetCategories(self, index):
 		self.statusBar().showMessage('Loading')
 		self.GetCategories(self.cat.itemData(index).toString())
@@ -130,12 +136,12 @@ class MainWindow(QtGui.QMainWindow):
 		
 		self.title.setText('<font size=5>%s<br/>%s</font>' % (self.titleEng, self.titleJap))
 		
-		noteVal = self.doc.cssselect('div#note div.headline')
+		noteVal = self.doc.cssselect('div.headline')
 		
 		if (noteVal):
-			self.note.setText('Note:Yes')
+			self.note.setEnabled(True)
 		else:
-			self.note.setText('Note:No')
+			self.note.setEnabled(False)
 		
 		self.web.setZoomFactor(1)
 		
@@ -148,6 +154,9 @@ class MainWindow(QtGui.QMainWindow):
 				self.images.append(IMG.get('src'))
 		
 		for A in self.doc.cssselect('div#thumbnail a'):
+			self.screens.append(A.get('href'))
+			
+		for A in self.doc.cssselect('div#thumbnail_re a'):
 			self.screens.append(A.get('href'))
 		
 		if (not self.screens):
@@ -332,7 +341,31 @@ class MainWindow(QtGui.QMainWindow):
 			copy.clipboard_clear()
 			copy.clipboard_append(self.titleJap)
 			copy.destroy()
-
+		
+	def OpenNote(self):
+		note1 = self.doc.xpath('//*[@id="note"]')
+		note2 = self.doc.xpath('//*[@id="note2"]')
+		begin = '<html lang="ja"><head><title>PC98 Note</title><meta charset="Shift_JIS"><link rel="stylesheet" href="https://raw.githubusercontent.com/FomaLSSJ/pc98db/master/css/pc9801.css"><link rel="stylesheet" href="https://raw.githubusercontent.com/FomaLSSJ/pc98db/master/css/note.css"></head><body style="color:#f7f7f7; font-weight:bold; margin:0;">'
+		end = '</body></html>'
+		if (note1):
+			strnote = etree.tostring(note1[0])
+		if (note2):
+			strnote = etree.tostring(note2[0])
+		strnote = string.replace(strnote,'src="','src="http://mercenaryforce.web.fc2.com/pc9801/pc98/')
+		file= open('.note.html', 'w')
+		file.write(begin)
+		file.write(strnote)
+		file.write(end)
+		file.close
+		
+		self.webnote.load(QtCore.QUrl('.note.html'))
+		self.notewin.setWindowTitle(':Note')
+		self.notewin.setGeometry(100, 50, 1210, 800)
+		self.notewin.show()
+			
+	def closeEvent(self, event):
+		os.remove('.note.html')
+		
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)
 	main = MainWindow()
