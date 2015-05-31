@@ -102,6 +102,12 @@ class MainWindow(QtGui.QMainWindow):
 		self.webnote = QtWebKit.QWebView(self.notewin)
 		self.webnote.setGeometry(QtCore.QRect(5, 5, 1270, 790))
 		
+		self.about = QtGui.QWidget()
+		self.alabel = QtGui.QLabel('<br/>Make script <b>FomaLSSJ</b><br/>Big thanks <b>z3tzilla</b><br/><br/><a href="https://github.com/FomaLSSJ/pc98db">Visit GitHub project page</a>', self.about)
+		self.alabel.setOpenExternalLinks(True)
+		self.alabel.setGeometry(QtCore.QRect(5, 5, 310, 110))
+		self.alabel.setAlignment(QtCore.Qt.AlignCenter)
+		
 		self.GetRootElement()
 		
 	def SetCategories(self, index):
@@ -362,6 +368,12 @@ class MainWindow(QtGui.QMainWindow):
 		self.notewin.setWindowTitle(':Note')
 		self.notewin.setGeometry(100, 50, 1280, 800)
 		self.notewin.show()
+			
+	def keyPressEvent(self, event):
+		if event.key() == QtCore.Qt.Key_F1:
+			self.about.setWindowTitle(':About')
+			self.about.setGeometry(QtCore.QRect(600, 400, 320, 120))
+			self.about.show()
 			
 	def closeEvent(self, event):
 		os.remove('.note.html')
