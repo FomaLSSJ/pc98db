@@ -100,7 +100,7 @@ class MainWindow(QtGui.QMainWindow):
 		
 		self.notewin = QtGui.QWidget()
 		self.webnote = QtWebKit.QWebView(self.notewin)
-		self.webnote.setGeometry(QtCore.QRect(5, 5, 1200, 790))
+		self.webnote.setGeometry(QtCore.QRect(5, 5, 1270, 790))
 		
 		self.GetRootElement()
 		
@@ -360,7 +360,7 @@ class MainWindow(QtGui.QMainWindow):
 		
 		self.webnote.load(QtCore.QUrl('.note.html'))
 		self.notewin.setWindowTitle(':Note')
-		self.notewin.setGeometry(100, 50, 1210, 800)
+		self.notewin.setGeometry(100, 50, 1280, 800)
 		self.notewin.show()
 			
 	def closeEvent(self, event):
