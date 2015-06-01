@@ -376,7 +376,8 @@ class MainWindow(QtGui.QMainWindow):
 			self.about.show()
 			
 	def closeEvent(self, event):
-		os.remove('.note.html')
+		if os.path.exists('.note.html'):
+			os.remove('.note.html')
 		
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)
