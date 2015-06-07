@@ -1,255 +1,292 @@
-/* PC98 CSS */
+/* PC9801 CSS */
 
 A { text-decoration:none; outline:none; }
-	A:link { color:#000000; }
-	A:visited { color:#000000; }
-	A:active { color:#000000; }
-	A:hover { color:#000000; }
+	A:link { color:#ffffff; }
+	A:visited { color:#ffffff; }
+	A:active { color:#ffffff; }
+	A:hover { color:#ffffff; }
 IMG {
 	border:none;
 }
 	IMG.ss {
-		background-color:#ffffdd; padding:7px; margin:0 10px 0 0; vertical-align: bottom;
-		box-shadow: 8px 8px 0px 1px #222222;
+		vertical-align: bottom; border:solid 0px #d8d8d8; filter: brightness(0.90);
 	}
-	IMG.flag {
-		background-color:#000000; padding:1px; margin:0 2px 0 0; vertical-align: bottom;
-		box-shadow: 1px 1px 0px 1px #222222;
-	}
-	IMG.icon { margin:0 2px 0 0; vertical-align: middle; }
-	IMG.th { vertical-align: bottom; margin:0 1px 0 0; border:solid 3px #ffffdd; vertical-align:top; box-shadow: 1px 1px 0px 0px #222222;}
-	IMG.th2 { border:none; vertical-align:middle; border-radius: 10px; margin:4px 2px 8px 2px; box-shadow: 0px 1px 1px 1px #222222;}
-	IMG.th3 { vertical-align: bottom; margin:0 1px 0 0; border:solid 3px #ffffdd; vertical-align:top; box-shadow: 1px 1px 0px 0px #222222;}
-	IMG.cover { background-color:#ffffdd; padding:8px; vertical-align:top;}
-
+	IMG.th { vertical-align: bottom; margin:0 1px 0 0; border:solid 3px #ffffdd; vertical-align:top; box-shadow: 1px 1px 0px 0px #222222; filter: brightness(0.90);}
+	IMG.th2 { border:none; vertical-align:middle; border-radius: 10px; margin:4px 2px 8px 2px; box-shadow: 0px 1px 1px 1px #222222; filter: brightness(0.90);}
+	IMG.th3 { vertical-align: bottom; margin:0 1px 0 0; border:solid 3px #ffffdd; vertical-align:top; box-shadow: 1px 1px 0px 0px #222222; filter: brightness(0.90);}
+	IMG.flag { margin:0 2px 0 0; border:solid 1px #222222;}
+	IMG.cover { vertical-align:top;}
 HTML {
-	font-family: "Meiryo";
+	font-family:"Meiryo"; color:#000000;
 	width:100%; height:100%; padding:0; margin:0;
 }
-
 BODY {
-	background-color:#000000; white-space:nowrap; overflow-y: scroll; margin-left:-780px;
-	background-image: url("pic/compass.png"),url("pic/divider.png"),url("pic/map.png"),url("pic/bg.png");
-	background-attachment: fixed;
-	background-repeat: no-repeat,no-repeat,no-repeat,repeat;
-	background-position: bottom 65px right 50px,bottom 80px left 13px,top -20px right -50px,top 0px left 0px;
+	background-color:#000000; white-space:nowrap; overflow-y:scroll; padding:0; margin:0; margin-left:-680px; z-index:1;
 }
 
-HEADER {
-	top:0; left:0; height:8px; width:100%; position:fixed; z-index:3;
-	background-image: url("pic/frame_07.png"),url("pic/frame_05.png"),url("pic/frame_01.png");
-	background-attachment: fixed;
-	background-repeat: no-repeat,no-repeat,repeat-x;
-	background-position: top 0px right 0px,top 0px left 0px,top 0px left 0px;
+/* frame */
+	#frame_left,#frame_right {
+		background-color:#000000; bottom:0; width:25px; height:100%; z-index:5; position:fixed;
+	}
+		#frame_left { left:0; } #frame_right { right:0; }
+	HEADER {
+		background-color:#000000; top:0; left:0; width:100%; height:25px; position:fixed; z-index:4;
+	}
+	FOOTER {
+		background-color:#000000; bottom:0; left:0; width:100%; height:25px; position:fixed; z-index:3;
+	}
+/* icon */
+	#disks { left:40px; top:45px; position:fixed; z-index:3;}
+	#search_jp { left:40px; top:100px; position:fixed; z-index:3;}
+	#search_en { left:40px; top:150px; position:fixed; z-index:3;}
+	#folder_adv { left:40px; top:230px; position:fixed; z-index:3;}
+	#folder_rpg { left:40px; top:285px; position:fixed; z-index:3;}
+	#folder_sim { left:40px; top:335px; position:fixed; z-index:3;}
+	#folder_tab { left:40px; top:385px; position:fixed; z-index:3;}
+	#folder_puz { left:40px; top:435px; position:fixed; z-index:3;}
+	#folder_mis { left:40px; top:485px; position:fixed; z-index:3;}
+	#folder_pub { left:40px; top:535px; position:fixed; z-index:3;}
+	#trash { left:40px; bottom:50px; position:fixed; z-index:3;}
+
+
+SECTION {
+	margin:0 0 0 50%; padding:0px 0 100px 0px; position:absolute;
 }
-#frame_left {
-	top:0; left:0; height:100%; width:8px; position:fixed; z-index:2;
-	background-image: url("pic/frame_03.png");
-	background-attachment: fixed;
-	background-repeat: repeat-y;
-	background-position:  top 0px left 0px;
+
+#db {
+	font-family:"Cambria"; bottom:30px; right:40px; position:fixed; color:#ffffff; font-size:32px; z-index:3px;
 }
-#frame_right {
-	top:0; right:0; height:100%; width:8px; position:fixed; z-index:2;
-	background-image: url("pic/frame_04.png");
-	background-attachment: fixed;
-	background-repeat: repeat-y;
-	background-position:  top 0px right 0px;
+
+#win_ss1,#win_ss2,#win_ss3,#win_title,#win_cover,#win_file {
+	position:absolute;
 }
-FOOTER {
-	bottom:0px; right:0px; width:100%; height:48px; position:fixed; z-index:4;
-	background-image: url("pic/frame_08.png"),url("pic/frame_06.png"),url("pic/frame_02.png"),url("pic/footer_bg2.png"),url("pic/footer_bg1.png");
-	background-repeat: no-repeat,no-repeat,repeat-x,no-repeat,repeat-x;
-	background-position: bottom 40px right 0px,bottom 40px left 0px,bottom 40px left 0px,bottom 0px left 0px,bottom 0px left 0px;
-}
-#footer_right {
-	bottom:0px; right:0px; width:228px; height:40px; position:fixed; z-index:6;
-	background-image: url("pic/footer_bg3.png");
-	background-repeat: no-repeat;
-	background-position: bottom 0px right 0px;
-}
-#title_bg {
-	top:40px; left:245px; height:93px; position:absolute; z-index:1;
-	padding:3px 5px 3px 50px;
-	background-image: url("pic/title.png");
+	#win_ss1 { top:115px; left:50px; z-index:1;}
+	#win_ss2 { top:125px; left:440px; z-index:2;}
+	#win_ss3 { top:115px; left:835px; z-index:1;}
+	#win_title { top:430px; left:50px; }
+	#win_cover { top:445px; left:1050px; }
+	#win_review { margin:385px 0 0 100px; }
+	#win_file { top:115px; left:120px; z-index:1;}
+	#thumbnail { margin:430px 0 0 50px; }
+	#thumbnail_re { margin:20px 0 0 50px; }
+	#win_browser { margin:10px 0 0 50px; }
+	#win_browser_2 { margin:445px 0 0 50px; }
+
+.window_tab {
+	height:20px; width:132px;
+	background-image: url("pic/tab.png");
 	background-repeat: no-repeat;
 	background-position: top 0px left 0px;
 }
-#title_jp {
-	min-width:500px; height:36px; padding:4px 50px 0 25px; font-family:"Meiryo"; font-size:20px; font-weight:bold;
-	background-image: url("pic/scroll3.png"),url("pic/scroll2.png"),url("pic/scroll1.png");
-	background-repeat: no-repeat,no-repeat,repeat-x;
-	background-position: top 0px right 0px,top 0px left 0px,top 0px left 0px;
+.window_title {
+	padding:3px 0 0 0px; font-family:"Gisha"; font-weight:bold; text-align:center;
+	box-shadow: 1px 0px 0px 0px #222222;
 }
-#title_en {
-	margin:0 0 0 45px; font-family:"Georgia"; font-size:16px; font-weight:bold;
+.screenshot {
+	padding:24px 19px 19px 5px; box-shadow: 2px 1px 0px 0px #222222;
+	background-image: url("pic/ss_bottom_right.png"),url("pic/ss_bottom_left.png"),url("pic/ss_bottom.png"),url("pic/ss_menu_right.png"),url("pic/ss_menu_left.png"),url("pic/ss_menu_top.png"),url("pic/ss_left.png"),url("pic/ss_right_bottom.png"),url("pic/ss_right_top.png"),url("pic/ss_right.png");
+	background-repeat: no-repeat,no-repeat,repeat-x,no-repeat,no-repeat,repeat-x,repeat-y,no-repeat,no-repeat,repeat-y;
+	background-position: bottom 0px right 0px,bottom 0px left 0px,bottom 0px left 0px,top 0px right 0px,top 0px left 0px,top 0px left 0px,top 0px left 0px,bottom 19px right 0px,top 24px right 0px,top 0px right 0px;
 }
-#title_up {
-	margin:0 0 0 45px; font-family:"Meiryo"; font-size:16px; font-weight:bold;
+.coverart {
+	padding:24px 19px 19px 5px; box-shadow: 2px 0px 0px 0px #222222;
+	background-image: url("pic/cover_bottom_right.png"),url("pic/cover_bottom_left.png"),url("pic/cover_bottom.png"),url("pic/ss_menu_right.png"),url("pic/ss_menu_left.png"),url("pic/ss_menu_top.png"),url("pic/ss_left.png"),url("pic/ss_right_bottom.png"),url("pic/ss_right_top.png"),url("pic/ss_right.png");
+	background-repeat: no-repeat,no-repeat,repeat-x,no-repeat,no-repeat,repeat-x,repeat-y,no-repeat,no-repeat,repeat-y;
+	background-position: bottom 0px right 0px,bottom 0px left 0px,bottom 0px left 0px,top 0px right 0px,top 0px left 0px,top 0px left 0px,top 0px left 0px,bottom 19px right 0px,top 24px right 0px,top 0px right 0px;
 }
-#database {
-	top:10px; left:10px; position:fixed; z-index:2;
+
+.gametitle,.review {
+	padding:28px 40px 23px 10px; box-shadow: 2px 1px 0px 0px #222222;
+	background-color:#f0f0f0; min-width:500px;
+	background-image: url("pic/title_bottom_right.png"),url("pic/title_bottom_left.png"),url("pic/title_bottom.png"),url("pic/title_menu_right.png"),url("pic/title_menu_left.png"),url("pic/title_menu.png"),url("pic/title_left.png"),url("pic/title_right_top.png"),url("pic/title_right_bottom.png"),url("pic/title_right.png");
+	background-repeat: no-repeat,no-repeat,repeat-x,no-repeat,no-repeat,repeat-x,repeat-y,no-repeat,no-repeat,repeat-y;
+	background-position: bottom 0px right 0px,bottom 0px left 0px,bottom 0px left 0px,top 0px right 0px,top 0px left 0px,top 0px left 0px,top 0px left 0px,top 24px right 0px,bottom 19px right 0px,top 0px right 0px;
+}
+	.review { width:750px; white-space:normal; font-family:"Meiryo"; }
+
+	#title_jp {
+		margin:40px 0 0 50px; color:#ffffff; font-family:"Meiryo"; font-weight:bold; font-size:23px;
+		width:1195px; border-bottom:solid 1px #ffffff; 
+	}
+	#title_en {
+		margin:3px 0 0 50px; color:#ffffff; font-family:"Cambria"; font-size:19px; padding:0 0 0 20px;
+	}
+
+	#publisher {
+		color:#000000; font-family:"Meiryo"; font-size:13px;
+	}
+
+.browser {
+	padding:28px 40px 23px 10px; box-shadow: 2px 1px 0px 0px #222222;
+	background-color:#000000; min-width:1000px;
+	background-image: url("pic/browser_bottom_right.png"),url("pic/browser_bottom_left.png"),url("pic/browser_bottom.png"),url("pic/browser_left.png"),url("pic/browser_menu_right.png"),url("pic/browser_menu_left.png"),url("pic/browser_menu.png"),url("pic/browser_right_top.png"),url("pic/browser_right_bottom.png"),url("pic/browser_right.png");
+	background-repeat: no-repeat,no-repeat,repeat-x,repeat-y,no-repeat,no-repeat,repeat-x,no-repeat,no-repeat,repeat-y;
+	background-position: bottom 0px right 0px,bottom 0px left 0px,bottom 0px left 0px,top 0px left 0px,top 0px right 0px,top 0px left 0px,top 0px left 0px,top 53px right 0px,bottom 19px right 0px,top 0px right 0px;
+}
+.address { color:#000000; font-family:"Iskoola Pota"; padding:1px 0 0 28px;}
+	.note { white-space:pre; color:#ffffff; font-family:"Meiryo"; padding:0 0 0 8px;}
+
+#gamelist {
+	margin:30px 0 0 120px; padding:0px 0 50px 0px;
+}
+#genre_jp {
+	margin:5px 0 0 120px; color:#ffffff; font-weight:bold; font-size:19px; width:850px; border-bottom:solid 1px #ffffff;
+}
+#genre_en {
+	margin:3px 0 0 120px; color:#ffffff; font-size:14px;
 }
 #lang {
-	top:107px; left:98px; position:fixed; z-index:2;
+	margin:35px 0 0 120px;
 }
-
-SECTION {
-	margin:0 0 0 50%; padding:135px 0 180px 80px; position:absolute;
+#genre-navi {
+	 margin:10px 0 60px 120px; width:1000px;
 }
-#publisher {
-	height:36px; min-width:500px; position:absolute; padding:7px 50px 0 15px; margin:20px 0 10px 0px;
-	font-family:"Meiryo"; font-size:100%; font-weight:bold;
-	background-image: url("pic/scroll3.png"),url("pic/scroll2.png"),url("pic/scroll1.png");
-	background-repeat: no-repeat,no-repeat,repeat-x;
-	background-position: top 0px right 0px,top 0px left 0px,top 0px left 0px;
-}
-
-#cover {
-	margin:65px 0 0 1050px;  position:absolute; box-shadow: 6px 6px 0px 1px #222222;
-}
-#cover_tag {
-	background-color:#ffffdd; color:#000000; font-family:"Georgia"; font-weight:bold;
-	text-align:center; padding:2px 0 0 0;
-}
-
-#review { 
-	width:800px; min-height:20px; border:solid 1px #000000;
-	margin:65px 0 0 0; padding:10px 10px 10px 10px; white-space:normal;
-	background-color:#ffffdd; color:#443300; font-weight:normal;
-	box-shadow: 1px 1px 0px 1px #222222;
-}
-
-#thumbnail {
-	margin:65px 0 0 0px;
-}
-#thumbnail_re {
-	margin:15px 0 0 0px;
-}
-#note,#note2 {
-	background-color:#000000; color:#f7f7f7; font-weight:bold; white-space:pre;
-	margin:0; padding:20px 25px 23px 25px;
-}
-	#note2 { margin:0; }
-
-	#note A:link { color:#f7f7f7; } #note2 A:link { color:#f7f7f7; }
-	#note A:visited { color:#f7f7f7; } #note2 A:visited { color:#f7f7f7; }
-	#note A:active { color:#f7f7f7; } #note2 A:active { color:#f7f7f7; }
-	#note A:hover { color:#f7f7f7; } #note2 A:hover { color:#f7f7f7; }
-
-#navi {
-	top:15px; left:250px; width:1000px; position:absolute; z-index:5; font-family:"Georgia"; font-weight:bold;
-}
-	#navi:after {
+	#genre-navi:after {
 		clear:both;
 	}
-	.genre {
-		color:#000000; float:left; margin:0 5px 0 0; text-align:center;
-		padding:0px 5px 0 5px; min-width:50px;
+	.navi { 
+		float:left; min-width:55px; background-color:#ffffff; color:#000000; border-bottom:solid 1px transparent;
+		margin:0 4px 0 0; padding:0 7px 0 7px; text-align:center;  border-radius: 5px
 	}
+		.navi:hover { opacity:0.5; }
 
-#page-navi {
-	bottom:9px; left:235px; width:1300px; position:fixed; z-index:5;
+.list_sub { padding:0 15px 0 0; }
+	.list_sub2 { color:#ffffff; font-weight:bold;}
+.list_tit,.list_titex {
+	color:#ffffff; margin:0 0 0 15px; padding:0 50px 0 0px; border-bottom:dotted 1px transparent; 
 }
-	#page-navi:after {
-		clear:both;
-	}
+	.list_tit:hover,.list_titex:hover { border-bottom:dotted 1px #ffffff; }
+
+.list_pub,.list_rel {
+	color:#ffffff; padding:0 15px 0 5px;
+}
+#path {
+	top:118px; left:231px; position:absolute; font-family:"Iskoola Pota";
+}
+#page_navi {
+	bottom:25px; left:100px; width:1000px; height:20px; position:fixed; font-family:"Meiryo";
+}
 	.page {
-		float:left; background-color:#ffffdd; color:#000000; font-weight:bold;
-		min-width:60px; text-align:center; margin:0 7px 0 0; padding:0px 5px 1px 5px; border-radius: 3px;
-		box-shadow: 1px 1px 0px 1px #222222;transition-duration:0.3s;
+		margin:0 6px 0 0; font-weight:bold;
+		float:left; height:20px; min-width:50px; padding:3px 15px 0 15px; text-align:center; color:#000000;
+		background-image: url("pic/tab_page_right.png"),url("pic/tab_page_left.png"),url("pic/tab_page.png");
+		background-repeat: no-repeat,no-repeat,repeat-x;
+		background-position: top 0px right 0px,top 0px left 0px,top 0px left 0px;
 	}
-		.page:hover { box-shadow: -1px -1px 0px 1px #222222; transition-duration:0.3s;}
-#sub-navi {
-	 margin:0 0 0 100px; height:20px;
-}
-	#sub-navi:after {
-		clear:both;
-	}
-.tab { 
-	float:left; background-color:#ffffdd; min-width:50px; height:20px; border-radius: 2px 2px 0 0;
-	margin:0 2px 0 0; padding:0 7px 0 7px; text-align:center; font-weight:normal;
-	border-top:solid 1px #000000; border-left:solid 1px #000000; border-right:solid 1px #000000; border-bottom:solid 1px #000000;
-}
-	#tab_sel { border-bottom:solid 1px transparent; }
-	.tab:hover {opacity:0.4;}
-#gamelist { 
-	min-width:800px; border:solid 1px #000000;
-	margin:1px 0 0 100px; padding:25px 10px 10px 10px;
-	background-color:#ffffdd; color:#000000;
-
-}
-.list_sub2 {
-	min-width:40px; padding:0 10px 0 0;
-}
-.list_tit {
-	min-width:350px; padding:0 20px 0 0px; border-bottom:solid 1px transparent;
-}
-	.list_tit:hover { border-bottom:solid 1px #000000; }
-
 
 #pub-navi {
-	 margin:0 0 0 100px; height:80px;
+	 margin:0 0 0px 120px; height:80px;
 }
 	#pub-navi:after {
 		clear:both;
 	}
 
 .publist1,.publist2,.publist3 {
-		min-width:30px; min-height:20px; display:block; font-weight:normal; opacity:0.7;
+		min-width:30px; min-height:20px; display:block; opacity:0.7;
 		float:left; text-align:center; color:#000000;
 		padding:4px; margin:2px 2px 0 0; border-radius: 5px;
 }
-	.publist1 { background-color:#eeeedd; } .publist2 { background-color:#ffffdd; } .publist3 { background-color:#eeeedd; clear:both; }
+	.publist1 { background-color:#dddddd; } .publist2 { background-color:#ffffff; } .publist3 { background-color:#dddddd; clear:both; }
 
 #pubsel {
-	background-color:#ffffdd; opacity:1;
+	background-color:#ffffff; opacity:1;
 }
 	.publist1:hover,.publist2:hover,.publist3:hover {
 		opacity:1;
-	} 
+	}
 
 .publist_name {
-	color:#000000; padding:0 10px 0 0;
-	border-bottom:solid 1px #000000; font-weight:normal;
+	color:#ffffff; padding:0 10px 0 0; border-bottom:dotted 1px #ffffff; min-width:100px;
 }
 .publist_title,publist_title2 {
-	padding:0 35px 0 0; margin:0 0 0 2px; font-weight:normal;
-	border-bottom:solid 1px transparent; min-width:380px;
+	padding:0 35px 0 0; margin:0 0 0 2px;
+	border-bottom:dotted 1px transparent; min-width:380px;
 }
 .publist_title2 {
-	opacity:0.4;
+	color:#ffffff; opacity:0.4;
 }
 	.publist_title:hover {
-		border-bottom:solid 1px #000000;
-	} 
+		border-bottom:dotted 1px #ffffff;
+	}
 
+#file {
+	padding:46px 0 50px 2px; box-shadow: 2px 0px 0px 0px #222222;
+	background-color:#ffffff; min-width:700px;
+	background-image: url("pic/title_bottom_right.png"),url("pic/title_bottom_left.png"),url("pic/title_bottom.png"),url("pic/gamelist_menu_right.png"),url("pic/gamelist_menu_left.png"),url("pic/gamelist_menu.png"),url("pic/title_left.png"),url("pic/title_right_top.png"),url("pic/title_right_bottom.png"),url("pic/title_right.png");
+	background-repeat: no-repeat,no-repeat,repeat-x,no-repeat,no-repeat,repeat-x,repeat-y,no-repeat,no-repeat,repeat-y;
+	background-position: bottom 0px right 0px,bottom 0px left 0px,bottom 0px left 0px,top 0px right 0px,top 0px left 0px,top 0px left 0px,top 0px left 0px,top 49px right 0px,bottom 19px right 0px,top 0px right 0px;
+}
+#path {
+	top:165px; left:231px; position:absolute; font-family:"Iskoola Pota"; z-index:3;
+}
+	.list_txt,.list_fol {
+		color:#000000; padding:0 100px 0 34px;
+		background-repeat: no-repeat;
+		background-position: top 2px left 10px;
+	}
+		.list_txt { background-image: url("pic/icon_txt.png"); }
+		.list_fol { background-image: url("pic/icon_fol.png"); }
+.table_title {
+	height:25px; width:100%; padding:5px 0 0 40px; color:#000000; font-family:"Gisha"; text-decoration:underline;
+	background-image: url("pic/list_title_right.png"),url("pic/list_title_left.png"),url("pic/list_title.png");
+	background-repeat: no-repeat,no-repeat,repeat-x;
+	background-position: top 0px right 0px,top 0px left 0px,top 0px left 0px;
+}
+.table_publisher,.table_release {
+	height:25px; width:100%; padding:5px 0 0 10px; color:#000000; font-family:"Gisha"; text-decoration:underline;
+	background-image: url("pic/list_title_right.png"),url("pic/list_left.png"),url("pic/list_title.png");
+	background-repeat: no-repeat,no-repeat,repeat-x;
+	background-position: top 0px right 0px,top 0px left 0px,top 0px left 0px;
+}
 
-	@media screen and (max-width: 1600px) {
+	@media screen and (max-width: 1500px) {
 		BODY {
 			margin-left:0;
 		}
 		SECTION {
-			margin:0 0 0 0px; padding:135px 0 180px 80px;
+			margin:0 0 0 60px; padding:0px 0 100px 0px;
 		}
 	}
-	@media screen and (max-width: 1000px) {
+	@media screen and (max-width: 1200px) {
 		IMG.ss {
 			width:300px; height:188px;
 		}
 			IMG.th { width:280px; height:175px; }
-		SECTION {
-			margin:0 0 0 0px; padding:135px 0 180px 25px;
-		}
+			#win_ss1 { top:115px; left:50px; }
+			#win_ss2 { top:125px; left:355px; }
+			#win_ss3 { top:115px; left:660px; }
+			#win_title { top:380px; left:50px; }
+			#win_review { margin:340px 0 0 100px; }
+				.screenshot {
+					background-image: url("pic/cover_bottom_right.png"),url("pic/cover_bottom_left.png"),url("pic/cover_bottom.png"),url("pic/ss_menu_right.png"),url("pic/ss_menu_left.png"),url("pic/ss_menu_top.png"),url("pic/ss_left.png"),url("pic/ss_right_bottom.png"),url("pic/ss_right_top.png"),url("pic/ss_right.png");
+					background-repeat: no-repeat,no-repeat,repeat-x,no-repeat,no-repeat,repeat-x,repeat-y,no-repeat,no-repeat,repeat-y;
+					background-position: bottom 0px right 0px,bottom 0px left 0px,bottom 0px left 0px,top 0px right 0px,top 0px left 0px,top 0px left 0px,top 0px left 0px,bottom 19px right 0px,top 24px right 0px,top 0px right 0px;
+				}
+			#disks,#search_jp,#search_en,#folder_adv,#folder_rpg,#folder_sim,#folder_tab,#folder_puz,#folder_mis,#folder_pub,#trash { 
+				position:absolute;
+			}
+				#trash { left:40px; top:600px; }
+			#db {
+				top:30px; right:200px; position:absolute; font-size:25px;
+			}
 	}
 	@media screen and (max-width: 950px) {
 		IMG.ss {
 			width:240px; height:150px;
 		}
-		#database {
-			position:absolute;
+			IMG.th { width:280px; height:175px; }
+			#win_ss1 { top:115px; left:50px; }
+			#win_ss2 { top:125px; left:295px; }
+			#win_ss3 { top:115px; left:540px; }
+			#win_title { top:350px; left:50px; }
+			#win_review { margin:310px 0 0 100px; }
+		#db {
+			top:30px; right:450px; position:absolute; font-size:25px;
 		}
-		#lang {
-			position:absolute;
-		}
+	}
+	@media screen and (max-height: 700px) {
+		#trash { left:40px; top:600px; position:absolute; }
+			#disks,#search_jp,#search_en,#folder_adv,#folder_rpg,#folder_sim,#folder_tab,#folder_puz,#folder_mis,#folder_pub { 
+				position:absolute;
+			}
 	}

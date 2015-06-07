@@ -134,9 +134,9 @@ class MainWindow(QtGui.QMainWindow):
 		self.screens = []
 		self.imgLoad = False
 		
-		for DIV in self.doc.cssselect('div#title_bg'):
-			self.titleEng = DIV.cssselect('div#title_en')[0].text
-			self.titleJap = DIV.cssselect('div#title_jp')[0].text
+		#for DIV in self.doc.cssselect('div#title_bg'):
+		self.titleEng = self.doc.cssselect('div#title_en')[0].text
+		self.titleJap = self.doc.cssselect('div#title_jp')[0].text
 		
 		self.data.setText(self.doc.cssselect('div#publisher')[0].text)
 		
@@ -155,9 +155,13 @@ class MainWindow(QtGui.QMainWindow):
 			self.images.append(A.get('href'))
 		
 		if (self.images == []):
-			self.web.setZoomFactor(1.68)
-			for IMG in self.doc.cssselect('img.ss'):
-				self.images.append(IMG.get('src'))
+			for DIV in self.doc.cssselect('div.screenshot a'):
+				self.images.append(DIV.get('href'))
+			
+			if (not self.images):
+				self.web.setZoomFactor(1.68)
+				for IMG in self.doc.cssselect('img.ss'):
+					self.images.append(IMG.get('src'))
 		
 		for A in self.doc.cssselect('div#thumbnail a'):
 			self.screens.append(A.get('href'))
@@ -191,11 +195,18 @@ class MainWindow(QtGui.QMainWindow):
 		self.doc = lxml.html.document_fromstring(self.page.read())
 		
 		result = {}
-		for A in self.doc.cssselect('div#navi a'):
-			result[A.cssselect('div')[0].text] = A.get('href')
+		#for A in self.doc.cssselect('div#folder_adv a'):
+		#	result[A.cssselect('div')[0].text] = A.get('href')
 		
-		result.pop("Index", None)
-		result.pop("Publisher", None)
+		result['Adventure'] = 'Adventure_ABCD.html';
+		result['RPG'] = 'RPG.html';
+		result['Simulation'] = 'Sim_Tactical.html';
+		result['Tabletop'] = 'Tabletop_Mahjong.html';
+		result['Puzzle'] = 'Puzzle.html';
+		result['Misc'] = 'Misc_Action.html';
+		
+		#result.pop("Index", None)
+		#result.pop("Publisher", None)
 		
 		for key in sorted(result.iterkeys()):
 			self.cat.addItem(key, result[key])
@@ -207,7 +218,7 @@ class MainWindow(QtGui.QMainWindow):
 		self.sub_cat.clear()
 		
 		result = {}
-		for A in self.doc.cssselect('div#page-navi a'):
+		for A in self.doc.cssselect('div#genre-navi a'):
 			result[A.cssselect('div')[0].text] = A.get('href')
 		
 		for key in sorted(result.iterkeys()):
@@ -349,9 +360,9 @@ class MainWindow(QtGui.QMainWindow):
 			copy.destroy()
 		
 	def OpenNote(self):
-		note1 = self.doc.xpath('//*[@id="note"]')
-		note2 = self.doc.xpath('//*[@id="note2"]')
-		begin = '<html lang="ja"><head><title>PC98 Note</title><meta charset="Shift_JIS"><link rel="stylesheet" href="https://raw.githubusercontent.com/FomaLSSJ/pc98db/master/css/pc9801.css"><link rel="stylesheet" href="https://raw.githubusercontent.com/FomaLSSJ/pc98db/master/css/note.css"></head><body style="color:#f7f7f7; font-weight:bold; margin:0;">'
+		note1 = self.doc.xpath('//*[@class="note"]')
+		note2 = self.doc.xpath('//*[@class="note2"]')
+		begin = '<html lang="ja"><head><title>PC98 Note</title><meta charset="Shift_JIS"><link rel="stylesheet" href="http://mercenaryforce.web.fc2.com/pc9801/pc9801.css"><link rel="stylesheet" href="http://mercenaryforce.web.fc2.com/pc9801/pc98/css/note.css"></head><body style="background-color:#000000;color:#f7f7f7; font-weight:bold; margin:0;">'
 		end = '</body></html>'
 		if (note1):
 			strnote = etree.tostring(note1[0])
