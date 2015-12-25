@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: Shift_JIS -*-
+# -*- coding: UTF-8 -*-
 
 # Thanks so much for the powerful support z3tzilla
 
@@ -20,7 +20,7 @@ class MainWindow(QtGui.QMainWindow):
 		self.images = []
 		
 		self.setFixedSize(948, 600)
-		self.setWindowTitle(':PC-9801 Database')
+		self.setWindowTitle('PC98 Database Parser')
 		self.statusBar().showMessage('Ready')
 		
 		self.cat = QtGui.QComboBox(self)
@@ -126,7 +126,7 @@ class MainWindow(QtGui.QMainWindow):
 		
 		self.gameLink = str(url + self.list.currentItem().text(1)[3:])
 		self.page = urllib2.urlopen(str(url + self.list.currentItem().text(1)[3:]))
-		self.doc = lxml.html.document_fromstring(self.page.read(), parser=HTMLParser(encoding='shift-jis'))
+		self.doc = lxml.html.document_fromstring(self.page.read(), parser=HTMLParser(encoding='utf-8'))
 		
 		self.statusBar().showMessage('Loading ...')
 		
@@ -134,11 +134,10 @@ class MainWindow(QtGui.QMainWindow):
 		self.screens = []
 		self.imgLoad = False
 		
-		#for DIV in self.doc.cssselect('div#title_bg'):
-		self.titleEng = self.doc.cssselect('div#title_en')[0].text
-		self.titleJap = self.doc.cssselect('div#title_jp')[0].text
+		self.titleEng = self.doc.cssselect('span#title_en')[0].text
+		self.titleJap = self.doc.cssselect('span#title_jp')[0].text
 		
-		self.data.setText(self.doc.cssselect('div#publisher')[0].text)
+		self.data.setText(self.doc.cssselect('span#publisher')[0].text)
 		
 		self.title.setText('<font size=5>%s<br/>%s</font>' % (self.titleEng, self.titleJap))
 		
@@ -195,18 +194,11 @@ class MainWindow(QtGui.QMainWindow):
 		self.doc = lxml.html.document_fromstring(self.page.read())
 		
 		result = {}
-		#for A in self.doc.cssselect('div#folder_adv a'):
-		#	result[A.cssselect('div')[0].text] = A.get('href')
+		for A in self.doc.cssselect('div#navi a'):
+			result[A.cssselect('div')[0].text] = A.get('href')
 		
-		result['Adventure'] = 'Adventure_ABCD.html';
-		result['RPG'] = 'RPG.html';
-		result['Simulation'] = 'Sim_Tactical.html';
-		result['Tabletop'] = 'Tabletop_Mahjong.html';
-		result['Puzzle'] = 'Puzzle.html';
-		result['Misc'] = 'Misc_Action.html';
-		
-		#result.pop("Index", None)
-		#result.pop("Publisher", None)
+		result.pop("Index", None)
+		result.pop("Publisher", None)
 		
 		for key in sorted(result.iterkeys()):
 			self.cat.addItem(key, result[key])
@@ -218,8 +210,8 @@ class MainWindow(QtGui.QMainWindow):
 		self.sub_cat.clear()
 		
 		result = {}
-		for A in self.doc.cssselect('div#genre-navi a'):
-			result[A.cssselect('div')[0].text] = A.get('href')
+		for A in self.doc.cssselect('div#navi_sub a, div#pub-navi a'):
+			result[A.cssselect('div, span')[0].text] = A.get('href')
 		
 		for key in sorted(result.iterkeys()):
 			self.sub_cat.addItem(key, result[key])
@@ -228,6 +220,10 @@ class MainWindow(QtGui.QMainWindow):
 			self.GetSubCategories(url)
 
 	def GetSubCategories(self, url):
+		print "URL: " + url
+		if (url == ""):
+			return
+		
 		self.page = urllib2.urlopen("http://mercenaryforce.web.fc2.com/pc9801/en/%s" % url)
 		self.doc = lxml.html.document_fromstring(self.page.read())
 		
@@ -235,7 +231,7 @@ class MainWindow(QtGui.QMainWindow):
 		
 		result = []
 		
-		for TD in self.doc.cssselect('div#gamelist table tr div.list_sub2'):
+		for TD in self.doc.cssselect('div#gamelist table tr div.list_sub, div#gamelist2 table tr div.list_sub2'):
 			result.append(TD.cssselect('div')[0].text)
 
 		for r in result:
@@ -251,7 +247,7 @@ class MainWindow(QtGui.QMainWindow):
 		result = {}
 		getgame = False
 		
-		for TR in self.doc.cssselect('div#gamelist table tr'):
+		for TR in self.doc.cssselect('div#gamelist table tr, div#gamelist2 table tr'):
 			for TD in TR.cssselect('td'):
 				if ('class' in TD.attrib):
 					if (TD.get('class') == 'list_sub'):
@@ -265,7 +261,7 @@ class MainWindow(QtGui.QMainWindow):
 							result[A.cssselect('div')[0].text] = A.get('href')
 		
 		if (subcat == 'List'):
-			for A in self.doc.cssselect('div#gamelist table tr td a'):
+			for A in self.doc.cssselect('div#gamelist table tr td a, div#gamelist2 table tr td a'):
 				result[A.cssselect('div')[0].text] = A.get('href')
 		
 		for key in sorted(result.iterkeys()):
