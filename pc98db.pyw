@@ -356,14 +356,12 @@ class MainWindow(QtGui.QMainWindow):
 			copy.destroy()
 		
 	def OpenNote(self):
-		note1 = self.doc.xpath('//*[@class="note"]')
-		note2 = self.doc.xpath('//*[@class="note2"]')
-		begin = '<html lang="ja"><head><title>PC98 Note</title><meta charset="Shift_JIS"><link rel="stylesheet" href="http://mercenaryforce.web.fc2.com/pc9801/pc9801.css"><link rel="stylesheet" href="http://mercenaryforce.web.fc2.com/pc9801/pc98/css/note.css"></head><body style="background-color:#000000;color:#f7f7f7; font-weight:bold; margin:0;">'
+		note = self.doc.xpath('//*[@id="note"]')
+		begin = '<html lang="ja"><head><title>PC98 Note</title><meta charset="utf-8"><link rel="stylesheet" href="http://mercenaryforce.web.fc2.com/pc9801/pc9801.css"><link rel="stylesheet" href="http://mercenaryforce.web.fc2.com/pc9801/pc98/css/note.css"></head><body style="background-color:#000000;color:#f7f7f7; font-weight:bold; margin:0;">'
 		end = '</body></html>'
-		if (note1):
-			strnote = etree.tostring(note1[0])
-		if (note2):
-			strnote = etree.tostring(note2[0])
+		
+		if (note):
+			strnote = etree.tostring(note[0])
 		strnote = string.replace(strnote,'src="','src="http://mercenaryforce.web.fc2.com/pc9801/pc98/')
 		file= open('.note.html', 'w')
 		file.write(begin)
@@ -372,7 +370,7 @@ class MainWindow(QtGui.QMainWindow):
 		file.close
 		
 		self.webnote.load(QtCore.QUrl('.note.html'))
-		self.notewin.setWindowTitle(':Note')
+		self.notewin.setWindowTitle(self.titleEng + ' - Note')
 		self.notewin.setGeometry(100, 50, 1280, 800)
 		self.notewin.show()
 			
