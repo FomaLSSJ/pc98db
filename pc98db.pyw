@@ -9,7 +9,7 @@ from lxml.html import HTMLParser
 from Tkinter import Tk
 import urllib2, lxml.html, webbrowser, string, sys, os
 
-url = 'http://mercenaryforce.web.fc2.com/pc9801/'
+url = 'https://refuge.tokyo/pc9801/'
 
 class MainWindow(QtGui.QMainWindow):
 	def __init__(self, parent=None):
@@ -124,9 +124,13 @@ class MainWindow(QtGui.QMainWindow):
 		if (not self.list.currentItem().text(1) or self.imgLoad):
 			return
 		
-		self.gameLink = str(url + self.list.currentItem().text(1)[3:])
-		self.page = urllib2.urlopen(str(url + self.list.currentItem().text(1)[3:]))
-		self.doc = lxml.html.document_fromstring(self.page.read(), parser=HTMLParser(encoding='utf-8'))
+		try:
+			self.gameLink = str(url + self.list.currentItem().text(1)[3:])
+			self.page = urllib2.urlopen(str(url + self.list.currentItem().text(1)[3:]))
+			self.doc = lxml.html.document_fromstring(self.page.read(), parser=HTMLParser(encoding='utf-8'))
+		except:
+			self.statusBar().showMessage('Error, game not loaded');
+			return
 		
 		self.statusBar().showMessage('Loading ...')
 		
@@ -134,10 +138,10 @@ class MainWindow(QtGui.QMainWindow):
 		self.screens = []
 		self.imgLoad = False
 		
-		self.titleEng = self.doc.cssselect('span#title_en')[0].text
-		self.titleJap = self.doc.cssselect('span#title_jp')[0].text
+		self.titleEng = self.doc.cssselect('div#title_en')[0].text
+		self.titleJap = self.doc.cssselect('div#title_jp')[0].text
 		
-		self.data.setText(self.doc.cssselect('span#publisher')[0].text)
+		self.data.setText(self.doc.cssselect('div#publisher')[0].text)
 		
 		self.title.setText('<font size=5>%s<br/>%s</font>' % (self.titleEng, self.titleJap))
 		
@@ -150,7 +154,7 @@ class MainWindow(QtGui.QMainWindow):
 		
 		self.web.setZoomFactor(1)
 		
-		for A in self.doc.cssselect('div#screenshot a'):
+		for A in self.doc.cssselect('div#screenshot a, div#screenshot_a a, div#screenshot_b a, div#screenshot_c a'):
 			self.images.append(A.get('href'))
 		
 		if (self.images == []):
@@ -194,23 +198,26 @@ class MainWindow(QtGui.QMainWindow):
 		self.doc = lxml.html.document_fromstring(self.page.read())
 		
 		result = {}
-		for A in self.doc.cssselect('div#navi a'):
+		for A in self.doc.cssselect('div#genre-navi a'):
 			result[A.cssselect('div')[0].text] = A.get('href')
 		
 		result.pop("Index", None)
 		result.pop("Publisher", None)
+		result.pop("PUBLISHER", None)
+		result.pop("Exit", None)
+		result.pop("EXIT", None)
 		
 		for key in sorted(result.iterkeys()):
 			self.cat.addItem(key, result[key])
 
 	def GetCategories(self, url):
-		self.page = urllib2.urlopen("http://mercenaryforce.web.fc2.com/pc9801/en/%s" % url)
+		self.page = urllib2.urlopen('https://refuge.tokyo/pc9801/en/%s' % url)
 		self.doc = lxml.html.document_fromstring(self.page.read())
 
 		self.sub_cat.clear()
 		
 		result = {}
-		for A in self.doc.cssselect('div#navi_sub a, div#pub-navi a'):
+		for A in self.doc.cssselect('div#page_sel a, div#sub-genre a, div#sub-genre-fix a'):
 			result[A.cssselect('div, span')[0].text] = A.get('href')
 		
 		for key in sorted(result.iterkeys()):
@@ -224,14 +231,14 @@ class MainWindow(QtGui.QMainWindow):
 		if (url == ""):
 			return
 		
-		self.page = urllib2.urlopen("http://mercenaryforce.web.fc2.com/pc9801/en/%s" % url)
+		self.page = urllib2.urlopen('https://refuge.tokyo/pc9801/en/%s' % url)
 		self.doc = lxml.html.document_fromstring(self.page.read())
 		
 		self.list.clear()
 		
 		result = []
 		
-		for TD in self.doc.cssselect('div#gamelist table tr div.list_sub, div#gamelist2 table tr div.list_sub2'):
+		for TD in self.doc.cssselect('div#gamelist table tr div.list_sub,div#gamelist2 table tr div.list_sub2'):
 			result.append(TD.cssselect('div')[0].text)
 
 		for r in result:
@@ -356,16 +363,17 @@ class MainWindow(QtGui.QMainWindow):
 			copy.destroy()
 		
 	def OpenNote(self):
-		note = self.doc.xpath('//*[@id="note"]')
-		begin = '<html lang="ja"><head><title>PC98 Note</title><meta charset="utf-8"><link rel="stylesheet" href="http://mercenaryforce.web.fc2.com/pc9801/pc9801.css"><link rel="stylesheet" href="http://mercenaryforce.web.fc2.com/pc9801/pc98/css/note.css"></head><body style="background-color:#000000;color:#f7f7f7; font-weight:bold; margin:0;">'
+		#note = self.doc.xpath('//*[@id="note"]')
+		note = self.doc.cssselect('div#note, div#note_b')
+		begin = '<html lang="ja"><head><title>PC98 Note</title><meta charset="utf-8"><link rel="stylesheet" href="https://refuge.tokyo/pc9801/pc9801.css"><link rel="stylesheet" href="https://refuge.tokyo/pc9801/css/note.css"><style>#note_b{margin:0!important}</style></head><body style="background-color:#000000;color:#f7f7f7; font-weight:bold; margin:0;">'
 		end = '</body></html>'
 		
 		if (note):
 			strnote = etree.tostring(note[0])
-		strnote = string.replace(strnote,'src="','src="http://mercenaryforce.web.fc2.com/pc9801/pc98/')
-		file= open('.note.html', 'w')
+		strnoteUrl = string.replace(strnote, 'src="','src="https://refuge.tokyo/pc9801/pc98/')
+		file = open('.note.html', 'w')
 		file.write(begin)
-		file.write(strnote)
+		file.write(strnoteUrl)
 		file.write(end)
 		file.close
 		
