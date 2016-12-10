@@ -365,7 +365,7 @@ class MainWindow(QtGui.QMainWindow):
 	def OpenNote(self):
 		#note = self.doc.xpath('//*[@id="note"]')
 		note = self.doc.cssselect('div#note, div#note_b')
-		begin = '<html lang="ja"><head><title>PC98 Note</title><meta charset="utf-8"><link rel="stylesheet" href="https://refuge.tokyo/pc9801/pc9801.css"><link rel="stylesheet" href="https://refuge.tokyo/pc9801/css/note.css"><style>#note_b{margin:0!important}</style></head><body style="background-color:#000000;color:#f7f7f7; font-weight:bold; margin:0;">'
+		begin = '<html lang="ja"><head><title>PC98 Note</title><meta charset="utf-8"><link rel="stylesheet" href="https://refuge.tokyo/pc9801/pc9801.css"><link rel="stylesheet" href="https://refuge.tokyo/pc9801/pc98/css/note.css"><style>#note_b{margin:0!important}</style></head><body style="background-color:#000000;color:#f7f7f7; font-weight:bold; margin:0;">'
 		end = '</body></html>'
 		
 		if (note):
