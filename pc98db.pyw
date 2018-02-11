@@ -3,15 +3,17 @@
 
 # Thanks so much for the powerful support z3tzilla
 
-from PyQt4 import QtGui, QtCore, QtWebKit
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtWebEngineWidgets import *
 from lxml import etree
 from lxml.html import HTMLParser
-from Tkinter import Tk
-import urllib2, lxml.html, webbrowser, string, sys, os
+from tkinter import Tk
+import urllib.request, lxml.html, webbrowser, string, sys, os
 
 url = 'https://refuge.tokyo/pc9801/'
 
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QMainWindow):
 	def __init__(self, parent=None):
 		super(MainWindow, self).__init__(parent)
 		
@@ -23,101 +25,103 @@ class MainWindow(QtGui.QMainWindow):
 		self.setWindowTitle('PC98 Database Parser')
 		self.statusBar().showMessage('Ready')
 		
-		self.cat = QtGui.QComboBox(self)
-		self.cat.setGeometry(QtCore.QRect(5, 5, 256, 20))
+		self.cat = QComboBox(self)
+		self.cat.setGeometry(QRect(5, 5, 256, 20))
 		self.cat.currentIndexChanged.connect(self.SetCategories)
 		
-		self.sub_cat = QtGui.QComboBox(self)
-		self.sub_cat.setGeometry(QtCore.QRect(5, 25, 256, 20))
+		self.sub_cat = QComboBox(self)
+		self.sub_cat.setGeometry(QRect(5, 25, 256, 20))
 		self.sub_cat.currentIndexChanged.connect(self.SetSubCategories)
 		
-		self.list = QtGui.QTreeWidget(self)
+		self.list = QTreeWidget(self)
 		self.list.setHeaderHidden(True)
 		self.list.clicked.connect(self.SetGame)
-		self.list.setGeometry(QtCore.QRect(5, 45, 256, 535))
+		self.list.setGeometry(QRect(5, 45, 256, 535))
 		
-		self.title = QtGui.QLabel('<font size=5>???<br/>???</font>', self)
-		self.title.setGeometry(QtCore.QRect(280, 9, 741, 64))
+		self.title = QLabel('<font size=5>???<br/>???</font>', self)
+		self.title.setGeometry(QRect(280, 9, 741, 64))
 		
-		self.line = QtGui.QFrame(self)
-		self.line.setGeometry(QtCore.QRect(280, 73, 731, 16))
-		self.line.setFrameShape(QtGui.QFrame.HLine)
-		self.line.setFrameShadow(QtGui.QFrame.Sunken)
+		self.line = QFrame(self)
+		self.line.setGeometry(QRect(280, 73, 731, 16))
+		self.line.setFrameShape(QFrame.HLine)
+		self.line.setFrameShadow(QFrame.Sunken)
 		
-		self.data = QtGui.QLabel('Publisher:??? | Release:??? | Media:???', self)
-		self.data.setGeometry(QtCore.QRect(280, 87, 731, 16))
+		self.data = QLabel('Publisher:??? | Release:??? | Media:???', self)
+		self.data.setGeometry(QRect(280, 87, 731, 16))
 		
-		self.frame = QtGui.QFrame(self)
-		self.frame.setGeometry(QtCore.QRect(280, 170, 650, 410))
-		self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
-		self.frame.setFrameShadow(QtGui.QFrame.Raised)
+		self.frame = QFrame(self)
+		self.frame.setGeometry(QRect(280, 170, 650, 410))
+		self.frame.setFrameShape(QFrame.StyledPanel)
+		self.frame.setFrameShadow(QFrame.Raised)
 		
-		self.pic1 = QtGui.QPushButton('Picture 1', self)
+		self.pic1 = QPushButton('Picture 1', self)
 		self.pic1.clicked.connect(self.SetPic1)
-		self.pic1.setGeometry(QtCore.QRect(280, 140, 60, 24))
+		self.pic1.setGeometry(QRect(280, 140, 60, 24))
 		
-		self.pic2 = QtGui.QPushButton('Picture 2', self)
+		self.pic2 = QPushButton('Picture 2', self)
 		self.pic2.clicked.connect(self.SetPic2)
-		self.pic2.setGeometry(QtCore.QRect(350, 140, 60, 24))
+		self.pic2.setGeometry(QRect(350, 140, 60, 24))
 		
-		self.pic3 = QtGui.QPushButton('Picture 3', self)
+		self.pic3 = QPushButton('Picture 3', self)
 		self.pic3.clicked.connect(self.SetPic3)
-		self.pic3.setGeometry(QtCore.QRect(420, 140, 60, 24))
+		self.pic3.setGeometry(QRect(420, 140, 60, 24))
 		
-		self.scr1 = QtGui.QPushButton('Screen 1', self)
+		self.scr1 = QPushButton('Screen 1', self)
 		self.scr1.clicked.connect(self.SetScr1)
-		self.scr1.setGeometry(QtCore.QRect(520, 140, 60, 24))
+		self.scr1.setGeometry(QRect(520, 140, 60, 24))
 		self.scr1.setEnabled(False)
 		
-		self.scr2 = QtGui.QPushButton('Screen 2', self)
+		self.scr2 = QPushButton('Screen 2', self)
 		self.scr2.clicked.connect(self.SetScr2)
-		self.scr2.setGeometry(QtCore.QRect(590, 140, 60, 24))
+		self.scr2.setGeometry(QRect(590, 140, 60, 24))
 		self.scr2.setEnabled(False)
 		
-		self.scr3 = QtGui.QPushButton('Screen 3', self)
+		self.scr3 = QPushButton('Screen 3', self)
 		self.scr3.clicked.connect(self.SetScr3)
-		self.scr3.setGeometry(QtCore.QRect(660, 140, 60, 24))
+		self.scr3.setGeometry(QRect(660, 140, 60, 24))
 		self.scr3.setEnabled(False)
 		
-		self.note = QtGui.QPushButton('Note', self)
+		self.note = QPushButton('Note', self)
 		self.note.clicked.connect(self.OpenNote)
-		self.note.setGeometry(QtCore.QRect(830, 110, 100, 24))
+		self.note.setGeometry(QRect(830, 110, 100, 24))
 		self.note.setEnabled(False)
 		
-		self.browser = QtGui.QPushButton('Open in Browser', self)
+		self.browser = QPushButton('Open in Browser', self)
 		self.browser.clicked.connect(self.GetUrl)
-		self.browser.setGeometry(QtCore.QRect(830, 140, 100, 24))
+		self.browser.setGeometry(QRect(830, 140, 100, 24))
 		
-		self.copyjp = QtGui.QPushButton('Copy Jap Title', self)
+		self.copyjp = QPushButton('Copy Jap Title', self)
 		self.copyjp.clicked.connect(self.CopyJpTitle)
-		self.copyjp.setGeometry(QtCore.QRect(830, 12, 100, 24))
+		self.copyjp.setGeometry(QRect(830, 12, 100, 24))
 		
-		self.web = QtWebKit.QWebView(self)
-		self.web.load(QtCore.QUrl('http://fullmotionvideo.free.fr/screen/images/Noimage1.png'))
-		self.web.setGeometry(QtCore.QRect(285, 175, 640, 400))
-		self.web.page().mainFrame().loadStarted.connect(self.WebStarted)
-		self.web.page().mainFrame().loadFinished.connect(self.WebComplete)
+		self.web = QWebEngineView(self)
+		self.web.load(QUrl('http://fullmotionvideo.free.fr/screen/images/Noimage1.png'))
+		self.web.setGeometry(QRect(285, 175, 640, 400))
+		self.web.page().loadStarted.connect(self.WebStarted)
+		self.web.page().loadFinished.connect(self.WebComplete)
+
+		self.notewin = QWidget()
+		self.webnote = QWebEngineView(self.notewin)
+		self.webnote.setGeometry(QRect(5, 5, 1270, 790))
 		
-		self.notewin = QtGui.QWidget()
-		self.webnote = QtWebKit.QWebView(self.notewin)
-		self.webnote.setGeometry(QtCore.QRect(5, 5, 1270, 790))
-		
-		self.about = QtGui.QWidget()
-		self.alabel = QtGui.QLabel('<br/>Make script <b>FomaLSSJ</b><br/>Big thanks <b>z3tzilla</b><br/><br/><a href="https://github.com/FomaLSSJ/pc98db">Visit GitHub project page</a>', self.about)
+		self.about = QWidget()
+		self.alabel = QLabel('<br/>Make script <b>FomaLSSJ</b><br/>Big thanks <b>z3tzilla</b><br/><br/><a href="https://github.com/FomaLSSJ/pc98db">Visit GitHub project page</a>', self.about)
 		self.alabel.setOpenExternalLinks(True)
-		self.alabel.setGeometry(QtCore.QRect(5, 5, 310, 110))
-		self.alabel.setAlignment(QtCore.Qt.AlignCenter)
+		self.alabel.setGeometry(QRect(5, 5, 310, 110))
+		self.alabel.setAlignment(Qt.AlignCenter)
 		
 		self.GetRootElement()
 		
 	def SetCategories(self, index):
 		self.statusBar().showMessage('Loading')
-		self.GetCategories(self.cat.itemData(index).toString())
+		#self.GetCategories(self.cat.itemData(index).toString())
+		self.GetCategories(self.cat.itemData(index))
 		self.statusBar().showMessage('Complete')
 
 	def SetSubCategories(self, index):
 		self.statusBar().showMessage('Loading')
-		self.GetSubCategories(self.sub_cat.itemData(index).toString())
+		#self.GetSubCategories(self.sub_cat.itemData(index).toString())
+		self.GetSubCategories(self.sub_cat.itemData(index))
 		self.statusBar().showMessage('Complete')
 
 	def SetGame(self, index):
@@ -126,7 +130,7 @@ class MainWindow(QtGui.QMainWindow):
 		
 		try:
 			self.gameLink = str(url + self.list.currentItem().text(1)[3:])
-			self.page = urllib2.urlopen(str(url + self.list.currentItem().text(1)[3:]))
+			self.page = urllib.request.urlopen(str(url + self.list.currentItem().text(1)[3:]))
 			self.doc = lxml.html.document_fromstring(self.page.read(), parser=HTMLParser(encoding='utf-8'))
 		except:
 			self.statusBar().showMessage('Error, game not loaded');
@@ -189,12 +193,11 @@ class MainWindow(QtGui.QMainWindow):
 				self.scr2.setEnabled(True)
 				self.scr3.setEnabled(True)			
 		
-		self.web.load(QtCore.QUrl(url + 'pc98/' + self.images[0]))
-		self.web.page().setViewportSize(self.web.page().mainFrame().contentsSize())
+		self.web.load(QUrl(url + 'pc98/' + self.images[0]))
 		self.SetButtonSelect(0)
 
 	def GetRootElement(self):
-		self.page = urllib2.urlopen(url + "en/Adventure_ABCD.html")
+		self.page = urllib.request.urlopen(url + "en/Adventure_ABCD.html")
 		self.doc = lxml.html.document_fromstring(self.page.read())
 		
 		result = {}
@@ -206,12 +209,12 @@ class MainWindow(QtGui.QMainWindow):
 		result.pop("PUBLISHER", None)
 		result.pop("Exit", None)
 		result.pop("EXIT", None)
-		
-		for key in sorted(result.iterkeys()):
+
+		for key in sorted(result):
 			self.cat.addItem(key, result[key])
 
 	def GetCategories(self, url):
-		self.page = urllib2.urlopen('https://refuge.tokyo/pc9801/en/%s' % url)
+		self.page = urllib.request.urlopen('https://refuge.tokyo/pc9801/en/%s' % url)
 		self.doc = lxml.html.document_fromstring(self.page.read())
 
 		self.sub_cat.clear()
@@ -220,18 +223,17 @@ class MainWindow(QtGui.QMainWindow):
 		for A in self.doc.cssselect('div#page_sel a, div#sub-genre a, div#sub-genre-fix a'):
 			result[A.cssselect('div, span')[0].text] = A.get('href')
 		
-		for key in sorted(result.iterkeys()):
+		for key in sorted(result):
 			self.sub_cat.addItem(key, result[key])
 		
 		if (not result):
 			self.GetSubCategories(url)
 
 	def GetSubCategories(self, url):
-		print "URL: " + url
-		if (url == ""):
+		if (not url):
 			return
-		
-		self.page = urllib2.urlopen('https://refuge.tokyo/pc9801/en/%s' % url)
+
+		self.page = urllib.request.urlopen('https://refuge.tokyo/pc9801/en/%s' % url)
 		self.doc = lxml.html.document_fromstring(self.page.read())
 		
 		self.list.clear()
@@ -242,11 +244,11 @@ class MainWindow(QtGui.QMainWindow):
 			result.append(TD.cssselect('div')[0].text)
 
 		for r in result:
-			self.rootTree = QtGui.QTreeWidgetItem(self.list, [r])
+			self.rootTree = QTreeWidgetItem(self.list, [r])
 			self.GetGameList(url, r)
 			
 		if (not result):
-			self.rootTree = QtGui.QTreeWidgetItem(self.list, ['List'])
+			self.rootTree = QTreeWidgetItem(self.list, ['List'])
 			self.GetGameList(url, 'List')
 		
 
@@ -271,8 +273,8 @@ class MainWindow(QtGui.QMainWindow):
 			for A in self.doc.cssselect('div#gamelist table tr td a, div#gamelist2 table tr td a'):
 				result[A.cssselect('div')[0].text] = A.get('href')
 		
-		for key in sorted(result.iterkeys()):
-			item = QtGui.QTreeWidgetItem([key])
+		for key in sorted(result):
+			item = QTreeWidgetItem([key])
 			item.setText(1, result[key])
 			self.rootTree.addChild(item)
 	
@@ -288,42 +290,42 @@ class MainWindow(QtGui.QMainWindow):
 		if (not self.images or self.pic1.isFlat() or self.imgLoad):
 			pass
 		else:
-			self.web.load(QtCore.QUrl(url + 'pc98/' + self.images[0]))
+			self.web.load(QUrl(url + 'pc98/' + self.images[0]))
 			self.SetButtonSelect(0)
 	
 	def SetPic2(self):
 		if (not self.images or self.pic2.isFlat() or self.imgLoad):
 			pass
 		else:
-			self.web.load(QtCore.QUrl(url + 'pc98/' + self.images[1]))
+			self.web.load(QUrl(url + 'pc98/' + self.images[1]))
 			self.SetButtonSelect(1)
 	
 	def SetPic3(self):
 		if (not self.images or self.pic3.isFlat() or self.imgLoad):
 			pass
 		else:
-			self.web.load(QtCore.QUrl(url + 'pc98/' + self.images[2]))
+			self.web.load(QUrl(url + 'pc98/' + self.images[2]))
 			self.SetButtonSelect(2)
 	
 	def SetScr1(self):
 		if (not self.screens or self.scr1.isFlat() or self.imgLoad):
 			pass
 		else:
-			self.web.load(QtCore.QUrl(url + 'pc98/' + self.screens[0]))
+			self.web.load(QUrl(url + 'pc98/' + self.screens[0]))
 			self.SetButtonSelect(3)
 	
 	def SetScr2(self):
 		if (not self.screens or self.scr2.isFlat() or self.imgLoad):
 			pass
 		else:
-			self.web.load(QtCore.QUrl(url + 'pc98/' + self.screens[1]))
+			self.web.load(QUrl(url + 'pc98/' + self.screens[1]))
 			self.SetButtonSelect(4)
 	
 	def SetScr3(self):
 		if (not self.screens or self.scr3.isFlat() or self.imgLoad):
 			pass
 		else:
-			self.web.load(QtCore.QUrl(url + 'pc98/' + self.screens[2]))
+			self.web.load(QUrl(url + 'pc98/' + self.screens[2]))
 			self.SetButtonSelect(5)
 	
 	def SetButtonSelect(self, num):
@@ -370,30 +372,31 @@ class MainWindow(QtGui.QMainWindow):
 		
 		if (note):
 			strnote = etree.tostring(note[0])
-		strnoteUrl = string.replace(strnote, 'src="','src="https://refuge.tokyo/pc9801/pc98/')
-		file = open('.note.html', 'w')
+		strnoteUrl = str(strnote, 'utf-8').replace('src="','src="https://refuge.tokyo/pc9801/pc98/')
+		file = open('note.html', 'w')
 		file.write(begin)
 		file.write(strnoteUrl)
 		file.write(end)
 		file.close
 		
-		self.webnote.load(QtCore.QUrl('.note.html'))
+		filePath = os.path.abspath(os.path.join(os.path.dirname(__file__), "note.html"))
+		self.webnote.load(QUrl.fromLocalFile(filePath))
 		self.notewin.setWindowTitle(self.titleEng + ' - Note')
 		self.notewin.setGeometry(100, 50, 1280, 800)
 		self.notewin.show()
 			
 	def keyPressEvent(self, event):
-		if event.key() == QtCore.Qt.Key_F1:
+		if event.key() == Qt.Key_F1:
 			self.about.setWindowTitle(':About')
-			self.about.setGeometry(QtCore.QRect(600, 400, 320, 120))
+			self.about.setGeometry(QRect(600, 400, 320, 120))
 			self.about.show()
 			
 	def closeEvent(self, event):
-		if os.path.exists('.note.html'):
-			os.remove('.note.html')
+		if os.path.exists('note.html'):
+			os.remove('note.html')
 		
 if __name__ == '__main__':
-	app = QtGui.QApplication(sys.argv)
+	app = QApplication(sys.argv)
 	main = MainWindow()
 	main.show()
 	sys.exit(app.exec_())
