@@ -58,14 +58,17 @@ class MainWindow(QMainWindow):
 		self.pic1 = QPushButton('Picture 1', self)
 		self.pic1.clicked.connect(self.SetPic1)
 		self.pic1.setGeometry(QRect(280, 140, 60, 24))
+		self.pic1.setEnabled(False)
 		
 		self.pic2 = QPushButton('Picture 2', self)
 		self.pic2.clicked.connect(self.SetPic2)
 		self.pic2.setGeometry(QRect(350, 140, 60, 24))
+		self.pic2.setEnabled(False)
 		
 		self.pic3 = QPushButton('Picture 3', self)
 		self.pic3.clicked.connect(self.SetPic3)
 		self.pic3.setGeometry(QRect(420, 140, 60, 24))
+		self.pic3.setEnabled(False)
 		
 		self.scr1 = QPushButton('Screen 1', self)
 		self.scr1.clicked.connect(self.SetScr1)
@@ -163,7 +166,7 @@ class MainWindow(QMainWindow):
 			self.note.setEnabled(True)
 		else:
 			self.note.setEnabled(False)
-		
+
 		for A in self.doc.cssselect('div#screenshot a, div#screenshot_a a, div#screenshot_b a, div#screenshot_c a'):
 			self.images.append(A.get('href'))
 		
@@ -186,6 +189,10 @@ class MainWindow(QMainWindow):
 			self.cvr.setEnabled(False)
 		else:
 			self.cvr.setEnabled(True)
+
+		self.pic1.setEnabled(True)
+		self.pic2.setEnabled(True)
+		self.pic3.setEnabled(True)
 
 		if (not self.screens):
 			self.scr1.setEnabled(False)
