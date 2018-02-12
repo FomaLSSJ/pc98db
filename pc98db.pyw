@@ -17,9 +17,10 @@ class MainWindow(QMainWindow):
 	def __init__(self, parent=None):
 		super(MainWindow, self).__init__(parent)
 		
-		self.gameLink = ''
-		self.titleJap = ''
+		self.gameLink = None
+		self.titleJap = None
 		self.images = []
+		self.cover = None
 		
 		self.setFixedSize(948, 600)
 		self.setWindowTitle('PC98 Database Parser')
@@ -42,18 +43,18 @@ class MainWindow(QMainWindow):
 		self.title.setGeometry(QRect(280, 9, 741, 64))
 		
 		self.line = QFrame(self)
-		self.line.setGeometry(QRect(280, 73, 731, 16))
+		self.line.setGeometry(QRect(280, 70, 648, 16))
 		self.line.setFrameShape(QFrame.HLine)
 		self.line.setFrameShadow(QFrame.Sunken)
 		
 		self.data = QLabel('Publisher:??? | Release:??? | Media:???', self)
 		self.data.setGeometry(QRect(280, 87, 731, 16))
 		
-		self.frame = QFrame(self)
-		self.frame.setGeometry(QRect(280, 170, 650, 410))
-		self.frame.setFrameShape(QFrame.StyledPanel)
-		self.frame.setFrameShadow(QFrame.Raised)
-		
+		self.cvr = QPushButton('Cover', self)
+		self.cvr.clicked.connect(self.SetCover)
+		self.cvr.setGeometry(QRect(280, 110, 60, 24))
+		self.cvr.setEnabled(False)
+
 		self.pic1 = QPushButton('Picture 1', self)
 		self.pic1.clicked.connect(self.SetPic1)
 		self.pic1.setGeometry(QRect(280, 140, 60, 24))
@@ -96,7 +97,7 @@ class MainWindow(QMainWindow):
 		
 		self.web = QWebEngineView(self)
 		self.web.load(QUrl('http://fullmotionvideo.free.fr/screen/images/Noimage1.png'))
-		self.web.setGeometry(QRect(285, 175, 640, 400))
+		self.web.setGeometry(QRect(280, 170, 650, 410))
 		self.web.page().loadStarted.connect(self.WebStarted)
 		self.web.page().loadFinished.connect(self.WebComplete)
 
@@ -114,13 +115,11 @@ class MainWindow(QMainWindow):
 		
 	def SetCategories(self, index):
 		self.statusBar().showMessage('Loading')
-		#self.GetCategories(self.cat.itemData(index).toString())
 		self.GetCategories(self.cat.itemData(index))
 		self.statusBar().showMessage('Complete')
 
 	def SetSubCategories(self, index):
 		self.statusBar().showMessage('Loading')
-		#self.GetSubCategories(self.sub_cat.itemData(index).toString())
 		self.GetSubCategories(self.sub_cat.itemData(index))
 		self.statusBar().showMessage('Complete')
 
@@ -133,7 +132,7 @@ class MainWindow(QMainWindow):
 			self.page = urllib.request.urlopen(str(url + self.list.currentItem().text(1)[3:]))
 			self.doc = lxml.html.document_fromstring(self.page.read(), parser=HTMLParser(encoding='utf-8'))
 		except:
-			self.statusBar().showMessage('Error, game not loaded');
+			self.statusBar().showMessage('Error, game not loaded')
 			return
 		
 		self.statusBar().showMessage('Loading ...')
@@ -141,6 +140,15 @@ class MainWindow(QMainWindow):
 		self.images = []
 		self.screens = []
 		self.imgLoad = False
+
+		coverVal = self.doc.cssselect('div#cover a')
+
+		if (coverVal):
+			self.cover = coverVal[0].get('href')
+			self.cvr.setEnabled(True)
+		else:
+			self.cover = None
+			self.cvr.setEnabled(False)
 		
 		self.titleEng = self.doc.cssselect('div#title_en')[0].text
 		self.titleJap = self.doc.cssselect('div#title_jp')[0].text
@@ -155,8 +163,6 @@ class MainWindow(QMainWindow):
 			self.note.setEnabled(True)
 		else:
 			self.note.setEnabled(False)
-		
-		self.web.setZoomFactor(1)
 		
 		for A in self.doc.cssselect('div#screenshot a, div#screenshot_a a, div#screenshot_b a, div#screenshot_c a'):
 			self.images.append(A.get('href'))
@@ -176,6 +182,11 @@ class MainWindow(QMainWindow):
 		for A in self.doc.cssselect('div#thumbnail_re a'):
 			self.screens.append(A.get('href'))
 		
+		if (not self.cover):
+			self.cvr.setEnabled(False)
+		else:
+			self.cvr.setEnabled(True)
+
 		if (not self.screens):
 			self.scr1.setEnabled(False)
 			self.scr2.setEnabled(False)
@@ -194,6 +205,7 @@ class MainWindow(QMainWindow):
 				self.scr3.setEnabled(True)			
 		
 		self.web.load(QUrl(url + 'pc98/' + self.images[0]))
+		self.web.setZoomFactor(1.0)
 		self.SetButtonSelect(0)
 
 	def GetRootElement(self):
@@ -286,11 +298,21 @@ class MainWindow(QMainWindow):
 		self.statusBar().showMessage('Image is Loaded')
 		self.imgLoad = False
 	
+	def SetCover(self):
+		if (not self.cover or self.cvr.isFlat() or self.imgLoad):
+			pass
+		else:
+			print()
+			self.web.load(QUrl(url + 'pc98/' + self.cover))
+			self.web.setZoomFactor(1.0)
+			self.SetButtonSelect(6)
+
 	def SetPic1(self):
 		if (not self.images or self.pic1.isFlat() or self.imgLoad):
 			pass
 		else:
 			self.web.load(QUrl(url + 'pc98/' + self.images[0]))
+			self.web.setZoomFactor(1.0)
 			self.SetButtonSelect(0)
 	
 	def SetPic2(self):
@@ -298,6 +320,7 @@ class MainWindow(QMainWindow):
 			pass
 		else:
 			self.web.load(QUrl(url + 'pc98/' + self.images[1]))
+			self.web.setZoomFactor(1.0)
 			self.SetButtonSelect(1)
 	
 	def SetPic3(self):
@@ -305,6 +328,7 @@ class MainWindow(QMainWindow):
 			pass
 		else:
 			self.web.load(QUrl(url + 'pc98/' + self.images[2]))
+			self.web.setZoomFactor(1.0)
 			self.SetButtonSelect(2)
 	
 	def SetScr1(self):
@@ -312,6 +336,7 @@ class MainWindow(QMainWindow):
 			pass
 		else:
 			self.web.load(QUrl(url + 'pc98/' + self.screens[0]))
+			self.web.setZoomFactor(1.0)
 			self.SetButtonSelect(3)
 	
 	def SetScr2(self):
@@ -319,6 +344,7 @@ class MainWindow(QMainWindow):
 			pass
 		else:
 			self.web.load(QUrl(url + 'pc98/' + self.screens[1]))
+			self.web.setZoomFactor(1.0)
 			self.SetButtonSelect(4)
 	
 	def SetScr3(self):
@@ -326,6 +352,7 @@ class MainWindow(QMainWindow):
 			pass
 		else:
 			self.web.load(QUrl(url + 'pc98/' + self.screens[2]))
+			self.web.setZoomFactor(1.0)
 			self.SetButtonSelect(5)
 	
 	def SetButtonSelect(self, num):
@@ -335,6 +362,8 @@ class MainWindow(QMainWindow):
 		self.scr1.setFlat(False)
 		self.scr2.setFlat(False)
 		self.scr3.setFlat(False)
+		self.cvr.setFlat(False)
+
 		if (num == 0):
 			self.pic1.setFlat(True)
 		elif (num == 1):
@@ -347,6 +376,8 @@ class MainWindow(QMainWindow):
 			self.scr2.setFlat(True)
 		elif (num == 5):
 			self.scr3.setFlat(True)
+		elif (num == 6):
+			self.cvr.setFlat(True)
 	
 	def GetUrl(self):
 		if (not self.gameLink):
@@ -387,7 +418,7 @@ class MainWindow(QMainWindow):
 			
 	def keyPressEvent(self, event):
 		if event.key() == Qt.Key_F1:
-			self.about.setWindowTitle(':About')
+			self.about.setWindowTitle('About')
 			self.about.setGeometry(QRect(600, 400, 320, 120))
 			self.about.show()
 			
